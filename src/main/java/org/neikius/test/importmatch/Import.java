@@ -17,7 +17,23 @@ public class Import {
   private static final String SELECT_MIN_MAX = "SELECT min(date_insert), max(date_insert) FROM MATCH;";
   private static final String INSERT_QUERY = "INSERT INTO MATCH (match_id, market_id, outcome_id, specifiers, date_insert) " +
       "VALUES (?, ?, ?, ?, ?);";
+  private static final String CREATE_TABLE_DDL = "CREATE TABLE IF NOT EXISTS MATCH (" +
+      "match_id VARCHAR(255)," +
+      "market_id INT," +
+      "outcome_id VARCHAR(255)," +
+      "specifiers VARCHAR(255)," +
+      "date_insert TIMESTAMP DEFAULT NOW()" +
+      ");";
+  private static final String JDBC_URL = "jdbc:postgresql://localhost:15423/matchimport";
+  private static final String JDBC_USER = "matchimport";
+  private static final String JDBC_PWD = "matchimport";
 
+  /**
+   * Run parser, store data in DB
+   * @param args first argument optional - filename&path to the input CSV file
+   * @throws SQLException
+   * @throws IOException
+   */
   public static void main(String[] args) throws SQLException, IOException {
     Import main = new Import();
 
@@ -101,14 +117,7 @@ public class Import {
   }
 
   private void prepareDb() throws SQLException {
-    String create = "CREATE TABLE IF NOT EXISTS MATCH (" +
-        "match_id VARCHAR(255)," +
-        "market_id INT," +
-        "outcome_id VARCHAR(255)," +
-        "specifiers VARCHAR(255)," +
-        "date_insert TIMESTAMP DEFAULT NOW()" +
-        ");";
-    getConnection().prepareStatement(create).execute();
+    getConnection().prepareStatement(CREATE_TABLE_DDL).execute();
   }
 
   private static Connection connection;
@@ -118,8 +127,7 @@ public class Import {
       return connection;
     }
     try {
-      connection = DriverManager.getConnection("jdbc:postgresql://localhost:15423/matchimport",
-          "matchimport", "matchimport");
+      connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PWD);
       connection.setAutoCommit(false);
       return connection;
     } catch (SQLException e) {

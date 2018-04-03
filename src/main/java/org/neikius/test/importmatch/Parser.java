@@ -11,8 +11,12 @@ class Parser {
 
   private String file;
 
-  public Parser(String file) {
-    this.file = file;
+  /**
+   * Will parse the CSV file to Match POJO list or stream. 4 fields, separated with | and string fields (1.,3.,4.) in single quotes
+   * @param fileName system filename with path or filename within the classpath
+   */
+  public Parser(String fileName) {
+    this.file = fileName;
   }
 
   public Stream<Match> parse() throws IOException {
