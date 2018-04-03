@@ -1,0 +1,21 @@
+---
+- name: Run docker postgres
+  hosts: localhost
+
+  tasks:
+  - name: Install postgres
+    docker_container:
+      name: match-postgres
+      image: postgres:9.6
+      state: started
+      restart: yes
+      restart_policy: unless-stopped
+      volumes:
+      - 'match-postgres-volume:/var/lib/postgresql/data'
+      - '/tmp/postgres:/tmp:rw'
+      ports:
+      - "15423:5432"
+      env:
+        POSTGRES_PASSWORD: matchimport
+        POSTGRES_USER: matchimport
+        POSTGRES_DB: matchimport

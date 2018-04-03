@@ -1,0 +1,4 @@
+MATCH_ID|MARKET_ID|OUTCOME_ID|SPECIFIERS
+'sr:match:13762991'|60|'2'|
+'sr:match:14198799'|218|'5'|'setnr=2|gamenr=6|pointnr=1'
+'sr:match:12261810'|1|'3'|
